@@ -83,7 +83,7 @@ async def run_bot(webrtc_connection):
             stt,
             context_aggregator.user(),
             llm,  # LLM
-            tts,
+            #tts,
             pipecat_transport.output(),
             context_aggregator.assistant(),
         ]
