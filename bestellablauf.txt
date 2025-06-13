@@ -1,0 +1,53 @@
+Prüfen, ob der Shop aktuell offen ist:
+GET /shop/isopen
+"isopen": true - ist aktuell offen
+Zudem gibt es ein Array mit den heutigen Öffnungszeiten. Das liefert auch einen Parameter: "nextopen" mit der Angabe, wann der Shop das nächste mal öffnet (vor allem interessant, wenn gerade geschlossen ist und der Kunde vorbestellen möchte)
+
+Diese Abfrage liefert eine "sid" mit. diese sollte im aktuellen Chat dann immer mitgeschleift und als GET-Parameter übergeben werden.
+Diese ist für den Warenkorb wichtig.
+
+
+Abfragen der Lieferadresse
+Die Liefergebiete kann man abfragen mit
+GET /deliveryarea/list
+Das liefert ein Array mit verschiedenen Liefergebieten mit dazugehörigen Mindestbestellwerten, Anfahrtskosten und der info, ab wann diese entfallen.
+Entweder eine Liste mit Postleitzahlen oder als Liste von Geo-Polygonen
+
+Wenn die Lieferadresse bekannt ist, dann kann der Bestellprozess beginnen.
+
+Übersicht über alle Produkte:
+GET /allproducts
+
+- Es gibt Produkte mit komplexen Menüs - hier kann sich der Dialog ändern, wenn man eine bestimmte Zutat wählt (wenn die Zutat selbst ein produkt ist).
+- Solche Produkte sind markiert als "ist_komplex"
+- Diese können erst einmal übersprungen werden.
+
+
+Kunde wählt ein Produkt:
+Abfrage der Produktdetails (Produktdialog)
+GET /products/details 
+- product_id = 123
+
+Liefert Infos zu
+- verfügbaren Größen mit aktuellen Preisen
+- Zusatzfragen zum Produkt (z.B. extra Zutaten)
+- Jede Frage hat ein min, max und free. Min sagt, wieviele Zuaten der Frage minimum gewählt werden müssen, max beschreibt das maximum und free, wieviele zutaten davon kostenlos sind.
+- Fragen mit min>0 MÜSSEN beantwortet werden.
+
+Ein fertiges Produkt kann in den Warfenkorb gelegt werden mit:
+POST /cart/product
+! ACHTUNG ! - ab hier wird zwingend die "sid" benötigt. Diese muss als GET-Parameter mitgeschleift werden.
+Die Antwort enthält den aktuellen Warfenkorb.
+
+Wenn man ein produkt noch einmal ändern möchte, kann man das tun mit
+PUT /cart/product
+Analog zu POST /cart/product, jedoch muss eine cart_id mitgegeben werden. Das ist die ID des Items im aktuellen Warenkorb.
+
+
+Wenn der Warenkorb vollständig ist und der Mindestbestellwert erreicht ist, dann kann er abgesendet werden mit
+POST /cart
+Hier müssen noch die Kundendaten (Name, Adresse, ...) mitgeliefert werden.
+Onlinezahlung lassen wir an der Stelle aus ...
+
+Ggf. noch fragen, ob der Kunde Bar oder mit Karte zahlen möchte und das als Kommentar mitliefern.
+
