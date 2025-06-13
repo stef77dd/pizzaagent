@@ -4,7 +4,7 @@ from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("shop_connector")
 
-NWS_API_BASE = "https://api.essen-bestellen.eu/menu?shopId=77"
+NWS_API_BASE = "https://api.essen-bestellen.eu/"
 USER_AGENT = "pizzaagent/1.0"
 
 async def make_request(url: str) -> dict[str, Any] | None:
@@ -47,7 +47,8 @@ async def get_alerts(state: str) -> str:
 
 @mcp.tool()
 async def get_menu() -> str:
-    menu_data = await make_request(NWS_API_BASE)
+    url = f"{NWS_API_BASE}allproducts?shopId=48"
+    menu_data = await make_request(url)
     return menu_data
 
 if __name__ == "__main__":
