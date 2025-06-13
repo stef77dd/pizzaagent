@@ -11,5 +11,6 @@ pyvenv.cfg
 .venv
 .env
 pip-selfcheck.json
+__pycache__/
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#venv
